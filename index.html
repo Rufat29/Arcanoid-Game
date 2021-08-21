@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #game {
+            position: relative;
+            margin: 50px auto;
+            width: 800px;
+            height: 600px;
+            box-shadow: 0 0 10px #666;
+        }
+
+        #game>div {
+            position: absolute;
+        }
+
+        #ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: red;
+        }
+
+        #bar {
+            width: 150px;
+            height: 10px;
+            background: blue;
+            bottom: 0;
+        }
+
+        #text {
+            position: absolute;
+            right: 0;
+            background-color: antiquewhite;
+            color: red;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            width: 100px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game">
+        <p id="text">Xal : 0</p>
+        <div id="ball"></div>
+        <div id="bar"></div>
+    </div>
+
+    <script>
+        const game = document.getElementById("game");
+        const ball = document.getElementById("ball");
+        const bar = document.getElementById("bar");
+        const text = document.getElementById("text");
+
+        let barX = 0;
+        let ballX = 0.01;
+        let ballY = 0.01;
+        let dx = 5;
+        let dy = 5;
+        let a = 0;
+
+        let start = setInterval(ballMove, 40);
+        document.onkeydown = barMove;
+
+        function ballMove() {
+            if (ballX <= 0 || ballX >= 770) dx *= -1;
+            if (ballY <= 0 ||
+                ballY > 560 && ballX > barX - 15 && ballX < barX + 135) dy *= -1;
+            if (ballY >= 570) gameOver();
+            point();
+            ballX += dx;
+            ballY += dy;
+            ball.style.left = ballX + "px";
+            ball.style.top = ballY + "px";
+        }
+
+        function point() {
+            if (ballY > 560 && ballX > barX - 15 && ballX < barX + 135) {
+                text.innerHTML = "Xal : " + (a += 10);
+
+                if (a % 50 == 0) {
+                    dy += dy * 25 / 100;
+                    dx += dx * 25 / 100;
+                }
+            }
+        }
+
+        function barMove(e) {
+            if (e.keyCode == 37 && barX > 0) barX -= 10;
+            if (e.keyCode == 39 && barX < 650) barX += 10;
+            bar.style.left = barX + "px";
+        }
+
+
+
+        function gameOver() {
+            clearInterval(start);
+            alert("UDUZDUN");
+        }
+    </script>
+</body>
+
+</html>
